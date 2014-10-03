@@ -41,7 +41,7 @@ Registry.prototype.browse = function(cb) {
 
     var ev = new EventEmitter();
 
-    var watcher = EtcdWatch(self._etcd, self._path, { recursive: true });
+    var watcher = EtcdWatch(self._etcd, self._path, { recursive: true, dir: true });
 
     watcher.on('create', function(result) {
         new_service(result.node);
@@ -53,6 +53,7 @@ Registry.prototype.browse = function(cb) {
             // TODO ??
             return;
         }
+
         var nodes = result.node.nodes;
         if (!nodes) {
             return;
@@ -79,6 +80,12 @@ Registry.prototype.browse = function(cb) {
         var service_watcher = EtcdWatch(self._etcd, key);
         service_watcher.on('update', function() {
             debug('serivce updated %s', key);
+        });
+
+        service_watcher.on('expire', function() {
+            debug('serivce expired %s', key);
+            service_watcher.stop();
+            service.emit('offline');
         });
 
         service_watcher.on('delete', function() {

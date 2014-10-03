@@ -43,10 +43,12 @@ Service.prototype.start = function(opt, cb) {
         self._started = true;
 
         (function heartbeat() {
+            debug('heartbeat %s', key);
             // heartbeat
             self._heartbeat = setTimeout(function() {
                 self._etcd.set(key, value, { prevExist: true, ttl: self._ttl }, function(err) {
                     // TODO err?
+                    heartbeat();
                 });
             }, 2500);
         })();

@@ -116,3 +116,30 @@ test('should not start if already running', function(done) {
         done();
     }, 1500);
 });
+
+test('should have heartbeats', function(done) {
+    this.timeout(12000);
+    var service_1 = registry_1.service('service-1', { ttl: 1 });
+
+    done = after(3, done);
+
+    service_1.start({}, function() {
+        done();
+    });
+
+    var online = true;
+    var browser = registry_1.browse(function(service) {
+        assert.equal('service-1', service.name);
+        service.once('offline', function() {
+            assert(!online);
+            browser.stop();
+            done();
+        });
+    });
+
+    setTimeout(function() {
+        online = false;
+        service_1.stop();
+        done();
+    }, 10000);
+});
