@@ -1,4 +1,5 @@
 var debug = require('debug')('etcd-spaceport:service');
+var EventEmitter = require('events').EventEmitter;
 
 var Service = function(etcd, name, opt) {
     if (!(this instanceof Service)) {
@@ -14,6 +15,8 @@ var Service = function(etcd, name, opt) {
     self._started = false;
     self._etcd = etcd;
 };
+
+Service.prototype.__proto__ = EventEmitter.prototype;
 
 Service.prototype.stop = function(cb) {
     var self = this;
@@ -47,7 +50,21 @@ Service.prototype.start = function(opt, cb) {
             // heartbeat
             self._heartbeat = setTimeout(function() {
                 self._etcd.set(key, value, { prevExist: true, ttl: self._ttl }, function(err) {
-                    // TODO err?
+                    // key not found (happens after a wake from sleep)
+                    // unless service was specifically stopped, it is still running
+                    // run start sequence again
+                    if (err && err.code == 100) {
+                        self._started = false;
+                        self.start(opt, function(err) {
+                            if (err) {
+                                self.emit('error', err);
+                            }
+                        });
+                    }
+                    else if (err) {
+                        self.emit('error', err);
+                    }
+
                     heartbeat();
                 });
             }, 2500);
