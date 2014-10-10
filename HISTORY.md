@@ -1,4 +1,4 @@
-# UNRELEASED
+# 0.1.1 (2014-10-09)
 
     * fix issue when resuming from sleep and etcd key expires
 
