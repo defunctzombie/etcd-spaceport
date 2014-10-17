@@ -1,3 +1,7 @@
+# UNRELEASED
+
+    * handle no response for initial get
+
 # 0.2.1 (2014-10-17)
 
     * fix constructor

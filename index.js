@@ -54,6 +54,10 @@ Registry.prototype.browse = function(cb) {
             return;
         }
 
+        if (!result) {
+            return;
+        }
+
         var nodes = result.node.nodes;
         if (!nodes) {
             return;
