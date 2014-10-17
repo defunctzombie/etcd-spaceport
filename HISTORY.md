@@ -1,4 +1,4 @@
-# UNRELEASED
+# 0.2.0 (2014-10-17)
 
     * add option to pass etcd hosts to registry
 
