@@ -7,7 +7,7 @@ Service registry leveraging etcd as a backend
 ```js
 var Registry = require('etcd-registry');
 
-var registry = Registry('/path/to/services');
+var registry = Registry('/path/to/services' [, '127.0.0.1:4001']);
 ```
 
 Specify the etcd base keypath. Services will be registered under this path.

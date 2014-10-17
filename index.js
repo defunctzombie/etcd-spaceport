@@ -6,7 +6,7 @@ var EtcdWatch = require('etcdjs-watch');
 
 var Service = require('./Service');
 
-var Registry = function(basepath) {
+var Registry = function(basepath, etcd_hosts) {
     if (!(this instanceof Registry)) {
         return new Registry(basepath);
     }
@@ -14,7 +14,7 @@ var Registry = function(basepath) {
     var self = this;
     self._watcher = undefined;
     self._path = basepath;
-    self._etcd = new Etcd();
+    self._etcd = new Etcd(etcd_hosts);
 };
 
 // create a new service on the registry
