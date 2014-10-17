@@ -1,6 +1,6 @@
 {
   "name": "etcd-spaceport",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "service registry leveraging etcd as a backend",
   "main": "index.js",
   "scripts": {
