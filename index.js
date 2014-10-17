@@ -8,7 +8,7 @@ var Service = require('./Service');
 
 var Registry = function(basepath, etcd_hosts) {
     if (!(this instanceof Registry)) {
-        return new Registry(basepath);
+        return new Registry(basepath, etcd_hosts);
     }
 
     var self = this;
