@@ -1,4 +1,4 @@
-# UNRELEASED
+# 0.2.3 (2014-11-02)
 
     * don't refresh etcd hosts automatically
 
