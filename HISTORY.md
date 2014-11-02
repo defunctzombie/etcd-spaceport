@@ -1,3 +1,7 @@
+# UNRELEASED
+
+    * don't refresh etcd hosts automatically
+
 # 0.2.2 (2014-10-17)
 
     * handle no response for initial get

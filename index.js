@@ -14,7 +14,9 @@ var Registry = function(basepath, etcd_hosts) {
     var self = this;
     self._watcher = undefined;
     self._path = basepath;
-    self._etcd = new Etcd(etcd_hosts);
+    self._etcd = new Etcd(etcd_hosts, {
+        refresh: false
+    });
 };
 
 // create a new service on the registry
