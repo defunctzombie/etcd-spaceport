@@ -49,10 +49,14 @@ Registry.prototype.browse = function(cb) {
         new_service(result.node);
     });
 
+    watcher.on('error', function(err) {
+        ev.emit('error', err);
+    });
+
     // initial fetch of the service
     self._etcd.get(self._path, { dir: true }, function(err, result) {
         if (err) {
-            // TODO ??
+            ev.emit('error', err);
             return;
         }
 
@@ -98,6 +102,10 @@ Registry.prototype.browse = function(cb) {
             debug('serivce deleted %s', key);
             service_watcher.stop();
             service.emit('offline');
+        });
+
+        service_watcher.on('error', function(err) {
+            service.emit('error', err);
         });
 
         service.name = key.replace(self._path, '');

@@ -15,7 +15,7 @@ Specify the etcd base keypath. Services will be registered under this path.
 #### Listen for new services
 
 ```js
-registry.browser(function(service) {
+registry.browse(function(service) {
     service.name; // 'my-service'
 
     service.once('offline', function() {
