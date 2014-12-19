@@ -1,3 +1,8 @@
+# UNRELEASED
+
+    * pass errors along through emitter
+    * update to etcdjs-watch 2.0.0
+
 # 0.2.3 (2014-11-02)
 
     * don't refresh etcd hosts automatically
