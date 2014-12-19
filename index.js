@@ -60,6 +60,8 @@ Registry.prototype.browse = function(cb) {
             return;
         }
 
+        watcher.start();
+
         if (!result) {
             return;
         }
