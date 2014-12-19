@@ -3,7 +3,7 @@ var EventEmitter = require('events').EventEmitter;
 
 var Service = function(etcd, name, opt) {
     if (!(this instanceof Service)) {
-        return new Service(etcd, name);
+        return new Service(etcd, name, opt);
     }
 
     var self = this;
@@ -29,7 +29,9 @@ Service.prototype.start = function(opt, cb) {
     var self = this;
 
     if (self._started) {
-        cb(new Error('Service ' + self.name + 'already started'));
+        return setImmediate(function() {
+            cb(new Error('Service ' + self.name + ' already started'));
+        });
     }
 
     var key = self.key;
@@ -49,20 +51,24 @@ Service.prototype.start = function(opt, cb) {
             debug('heartbeat %s', key);
             // heartbeat
             self._heartbeat = setTimeout(function() {
+                // if stopped before first heartbeat
+                if (!self._started) {
+                    return;
+                }
+
                 self._etcd.set(key, value, { prevExist: true, ttl: self._ttl }, function(err) {
                     // key not found (happens after a wake from sleep)
                     // unless service was specifically stopped, it is still running
                     // run start sequence again
                     if (err && err.code == 100) {
                         self._started = false;
-                        self.start(opt, function(err) {
-                            if (err) {
-                                self.emit('error', err);
-                            }
-                        });
+                        self.emit('error', err);
+                        return;
                     }
                     else if (err) {
+                        self._started = false;
                         self.emit('error', err);
+                        return;
                     }
 
                     heartbeat();
