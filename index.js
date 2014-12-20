@@ -53,14 +53,14 @@ Registry.prototype.browse = function(cb) {
         ev.emit('error', err);
     });
 
+    watcher.start();
+
     // initial fetch of the service
     self._etcd.get(self._path, { dir: true }, function(err, result) {
         if (err) {
             ev.emit('error', err);
             return;
         }
-
-        watcher.start();
 
         if (!result) {
             return;
@@ -108,7 +108,11 @@ Registry.prototype.browse = function(cb) {
 
         service_watcher.on('error', function(err) {
             service.emit('error', err);
+            // don't take service offline
+            // since it might not actually be offline...
         });
+
+        service_watcher.start();
 
         service.name = key.replace(self._path, '');
         service.details = details;

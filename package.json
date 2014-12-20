@@ -24,7 +24,7 @@
   "homepage": "https://github.com/defunctzombie/etcd-spaceport",
   "dependencies": {
     "debug": "2.1.0",
-    "etcdjs-watch": "1.0.1",
+    "etcdjs-watch": "1.1.0",
     "etcdjs": "2.0.0"
   },
   "devDependencies": {
