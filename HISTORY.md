@@ -1,4 +1,4 @@
-# UNRELEASED
+# 0.3.0 (2014-12-19)
 
     * pass errors along through emitter
     * update to etcdjs-watch 2.0.0
