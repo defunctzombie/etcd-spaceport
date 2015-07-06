@@ -1,3 +1,9 @@
+# UNRELEASED
+
+    * fix start/stop race condition
+    * remove prevExists requirement when heartbeating
+    * make heartbeat interval half of the ttl
+
 # 0.3.0 (2014-12-19)
 
     * pass errors along through emitter
