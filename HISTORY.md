@@ -1,4 +1,4 @@
-# UNRELEASED
+# 0.4.0 (2015-07-06)
 
     * fix start/stop race condition
     * remove prevExists requirement when heartbeating

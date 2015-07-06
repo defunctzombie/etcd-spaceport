@@ -1,10 +1,10 @@
 {
   "name": "etcd-spaceport",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "service registry leveraging etcd as a backend",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui qunit --reporter spec --bail --check-leaks" 
+    "test": "mocha --ui qunit --reporter spec --bail --check-leaks"
   },
   "repository": {
     "type": "git",
