@@ -36,6 +36,7 @@ Service.prototype.start = function(opt, cb) {
 
     var key = self.key;
     var value = JSON.stringify(opt);
+    var heartbeat_interval = self._ttl * 1000 / 2;
 
     // prevExist false because service should not exist
     self._etcd.set(key, value, { prevExist: false, ttl: self._ttl }, function(err) {
@@ -73,7 +74,7 @@ Service.prototype.start = function(opt, cb) {
 
                     heartbeat();
                 });
-            }, 2500);
+            }, heartbeat_interval);
         })();
 
         cb();
