@@ -10,7 +10,7 @@ var service_path_2 = path.join('/', 'test', 'etcd-spaceport', '2');
 var registry_1 = undefined;
 var registry_2 = undefined;
 
-test('should create a registry', function(done) {
+before('should create a registry', function(done) {
     registry_1 = Registry(service_path_1);
     registry_2 = Registry(service_path_2);
     done();
@@ -31,8 +31,7 @@ test('should create and register a new service', function(done) {
             done();
             browser.stop();
         });
-        service_1.stop();
-        done();
+        service_1.stop(done);
     });
 });
 
@@ -112,8 +111,7 @@ test('should not start if already running', function(done) {
 
     setTimeout(function() {
         browser.stop();
-        service_4.stop();
-        done();
+        service_4.stop(done);
     }, 1500);
 });
 
@@ -139,7 +137,6 @@ test('should have heartbeats', function(done) {
 
     setTimeout(function() {
         online = false;
-        service_1.stop();
-        done();
+        service_1.stop(done);
     }, 10000);
 });

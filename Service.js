@@ -21,6 +21,7 @@ Service.prototype.__proto__ = EventEmitter.prototype;
 Service.prototype.stop = function(cb) {
     var self = this;
     debug('stopping %s', self.key);
+    self._stopped = true;
     clearTimeout(self._heartbeat);
     self._etcd.delete(self.key, cb);
 };
@@ -36,12 +37,17 @@ Service.prototype.start = function(opt, cb) {
 
     var key = self.key;
     var value = JSON.stringify(opt);
+    var heartbeat_interval = self._ttl * 1000 / 2;
 
     // prevExist false because service should not exist
     self._etcd.set(key, value, { prevExist: false, ttl: self._ttl }, function(err) {
         if (err) {
             // err.code == 105 // already exists
             return cb(err);
+        }
+
+        if (self._stopped) {
+            return cb();
         }
 
         debug('started %s', key);
@@ -55,25 +61,17 @@ Service.prototype.start = function(opt, cb) {
                 if (!self._started) {
                     return;
                 }
-
-                self._etcd.set(key, value, { prevExist: true, ttl: self._ttl }, function(err) {
-                    // key not found (happens after a wake from sleep)
-                    // unless service was specifically stopped, it is still running
-                    // run start sequence again
-                    if (err && err.code == 100) {
+                self._etcd.set(key, value, { ttl: self._ttl }, function(err, body) {
+                    if (err) {
                         self._started = false;
                         self.emit('error', err);
                         return;
                     }
-                    else if (err) {
-                        self._started = false;
-                        self.emit('error', err);
-                        return;
+                    if (!self._stopped) {
+                        heartbeat();
                     }
-
-                    heartbeat();
                 });
-            }, 2500);
+            }, heartbeat_interval);
         })();
 
         cb();

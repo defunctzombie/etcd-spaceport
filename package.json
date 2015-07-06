@@ -4,7 +4,7 @@
   "description": "service registry leveraging etcd as a backend",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui qunit --reporter list"
+    "test": "mocha --ui qunit --reporter spec --bail --check-leaks" 
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "dependencies": {
     "debug": "2.1.0",
     "etcdjs-watch": "1.1.0",
-    "etcdjs": "2.0.0"
+    "etcdjs": "2.3.0"
   },
   "devDependencies": {
     "after": "0.8.1",
